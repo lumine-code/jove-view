@@ -524,6 +524,18 @@
 
     .output-latex {
       text-align: left;
+
+      &.output-latex-display {
+        text-align: center;
+      }
+
+      svg {
+        max-width: 100%;
+      }
+
+      .output-latex-loading {
+        color: rgb(from var(--text-color) r g b / 0.5);
+      }
     }
 
     .output-json,
