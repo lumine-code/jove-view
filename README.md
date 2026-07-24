@@ -1,122 +1,110 @@
-# jupyter-next
+# jove-view
 
-Open and edit Jupyter notebooks in Pulsar.
-
-![demo](https://github.com/asiloisad/pulsar-jupyter-next/blob/master/assets/demo.png?raw=true)
+Open and edit Jupyter notebooks.
 
 ## Features
 
-- **Notebook editing**: Open and edit `.ipynb` files with a cell-based interface.
-- **Stored output rendering**: Existing notebook outputs are displayed from notebook JSON.
-- **Markdown support**: Markdown cells render in command mode.
-- **Cell operations**: Insert, delete, move, merge, cut, copy, paste, duplicate, and change cell type.
-- **Cell type selector**: Switch active cell type via the toolbar dropdown or mouse wheel scroll over the selector.
-- **Multi-select cells**: Ctrl+click to toggle, Shift+click for range selection, Shift+Up/Down to grow the selection from an anchor cell.
-- **Drag & drop**: Reorder cells by dragging with auto-scroll near edges.
-- **Undo/redo**: Buffer-based notebook edit history for cell text and notebook operations.
-- **Open source**: Open `.ipynb` files as plain JSON text from an active notebook or tree-view.
-- **Dual mode**: Command mode for navigation, edit mode for typing.
-- **Notebook search**: Search and replace cell source through [search-panel](https://github.com/asiloisad/pulsar-search-panel). Find Next/Previous enters edit mode, focuses the matching cell editor, and selects the current match.
-- **Hydrogen execution**: Run cells with [hydrogen-next](https://github.com/asiloisad/pulsar-hydrogen-next) via the `hydrogen-adapter` service. Run/interrupt/restart/shutdown buttons appear in the toolbar; each code cell shows a per-cell Run button.
-- **Execution status**: Running cells pulse a warning border and show a marching diagonal hatch on the gutter. The execution count switches to `[*]` while running. Each cell's gutter shows the last completed run duration.
-- **Output protection**: Output images cannot be dragged out of the notebook.
-- **Linting support**: Code cells are exposed through a backing `.ipynb` editor for linter integrations.
-- **Navigation panel**: Markdown headings are exposed through the navigation adapter.
-- **Scrollmap markers**: Markdown headings, selected or active cells, and linter messages appear on the notebook scrollbar when `scrollmap` is installed. Linter ticks render in the left lane and are color-coded by severity.
-- **Export options**: Save as Python scripts or HTML.
+- **Notebook editing**: open and edit `.ipynb` files with a cell-based interface, command/edit modes, and keyboard-driven navigation.
+- **Cell operations**: insert, delete, move, merge, cut, copy, paste, duplicate, change type, and reorder cells by drag and drop.
+- **Rich output**: render stored notebook outputs including text, images, SVG, HTML, LaTeX, and markdown, with ANSI color support.
+- **Multi-select and history**: anchor-based multi-cell selection and buffer-based undo/redo of notebook edits.
+- **Execution integration**: run cells through the jove-repl kernel engine via the `jove.adapter` service, with per-cell run buttons and live execution status.
+- **Notebook search**: search and replace cell source through the search-panel package, entering edit mode on the matching cell.
+- **Open source**: open any `.ipynb` as plain JSON text from an active notebook or the tree-view.
+- **Editor integrations**: expose cells to linter, navigation, and scrollmap adapters so headings, selection, and diagnostics appear on the scrollbar.
+- **Export**: save notebooks as Python scripts or HTML.
 
 ## Installation
 
-Install `jupyter-next` from Pulsar's package installer or run `ppm install jupyter-next`.
+To install `jove-view`, clone this repository into your Lumine packages directory (`~/.lumine/packages/jove-view`) and restart Lumine. If it is listed in your configured package sources, it can also be installed from the Install pane of the Lumine settings.
 
 ## Commands
 
 Workspace commands:
 
-- `jupyter-next:toggle`: toggle the active notebook item.
-- `jupyter-next:new-notebook`: create a new notebook.
-- `jupyter-next:open-source`: open the active notebook as plain text.
+- `jove-view:toggle`: toggle the active notebook item.
+- `jove-view:new-notebook`: create a new notebook.
+- `jove-view:open-source`: open the active notebook as plain text.
 
 Notebook commands:
 
-- `jupyter-next:clear-output`: clear active cell output.
-- `jupyter-next:clear-all-outputs`: clear all outputs.
-- `jupyter-next:insert-cell-above`: insert cell above.
-- `jupyter-next:insert-cell-below`: insert cell below.
-- `jupyter-next:delete-cell`: delete cell.
-- `jupyter-next:move-cell-up`: move cell up.
-- `jupyter-next:move-cell-down`: move cell down.
-- `jupyter-next:change-cell-to-code`: change to code cell.
-- `jupyter-next:change-cell-to-markdown`: change to markdown cell.
-- `jupyter-next:change-cell-to-raw`: change to raw cell.
-- `jupyter-next:toggle-cell-output`: toggle output visibility.
-- `jupyter-next:toggle-cell-input`: toggle input visibility.
-- `jupyter-next:enter-edit-mode`: enter edit mode.
-- `jupyter-next:enter-command-mode`: enter command mode.
-- `jupyter-next:focus-previous-cell`: focus previous cell.
-- `jupyter-next:focus-next-cell`: focus next cell.
-- `jupyter-next:focus-first-cell`: focus first cell.
-- `jupyter-next:focus-last-cell`: focus last cell.
-- `jupyter-next:select-previous-cell`: extend selection to previous cell.
-- `jupyter-next:select-next-cell`: extend selection to next cell.
-- `jupyter-next:cut-cell`: cut cell.
-- `jupyter-next:copy-cell`: copy cell.
-- `jupyter-next:paste-cell-below`: paste cell below.
-- `jupyter-next:paste-cell-above`: paste cell above.
-- `jupyter-next:duplicate-cell`: duplicate cell.
-- `jupyter-next:merge-cell-below`: merge with cell below.
-- `jupyter-next:undo-cell-operation`: undo the latest notebook edit.
-- `jupyter-next:redo-cell-operation`: redo the latest notebook edit.
-- `jupyter-next:save`: save notebook.
-- `jupyter-next:save-as`: save notebook as.
-- `jupyter-next:export-to-python`: export to Python script.
-- `jupyter-next:export-to-html`: export to HTML.
+- `jove-view:clear-output`: clear active cell output.
+- `jove-view:clear-all-outputs`: clear all outputs.
+- `jove-view:insert-cell-above`: insert cell above.
+- `jove-view:insert-cell-below`: insert cell below.
+- `jove-view:delete-cell`: delete cell.
+- `jove-view:move-cell-up`: move cell up.
+- `jove-view:move-cell-down`: move cell down.
+- `jove-view:change-cell-to-code`: change to code cell.
+- `jove-view:change-cell-to-markdown`: change to markdown cell.
+- `jove-view:change-cell-to-raw`: change to raw cell.
+- `jove-view:toggle-cell-output`: toggle output visibility.
+- `jove-view:toggle-cell-input`: toggle input visibility.
+- `jove-view:enter-edit-mode`: enter edit mode.
+- `jove-view:enter-command-mode`: enter command mode.
+- `jove-view:focus-previous-cell`: focus previous cell.
+- `jove-view:focus-next-cell`: focus next cell.
+- `jove-view:focus-first-cell`: focus first cell.
+- `jove-view:focus-last-cell`: focus last cell.
+- `jove-view:select-previous-cell`: extend selection to previous cell.
+- `jove-view:select-next-cell`: extend selection to next cell.
+- `jove-view:cut-cell`: cut cell.
+- `jove-view:copy-cell`: copy cell.
+- `jove-view:paste-cell-below`: paste cell below.
+- `jove-view:paste-cell-above`: paste cell above.
+- `jove-view:duplicate-cell`: duplicate cell.
+- `jove-view:merge-cell-below`: merge with cell below.
+- `jove-view:undo-cell-operation`: undo the latest notebook edit.
+- `jove-view:redo-cell-operation`: redo the latest notebook edit.
+- `jove-view:save`: save notebook.
+- `jove-view:save-as`: save notebook as.
+- `jove-view:export-to-python`: export to Python script.
+- `jove-view:export-to-html`: export to HTML.
 
 Tree-view commands:
 
-- `jupyter-next:open-notebook`: open the selected `.ipynb` file as a notebook.
-- `jupyter-next:open-source`: open the selected `.ipynb` file as plain text.
+- `jove-view:open-notebook`: open the selected `.ipynb` file as a notebook.
+- `jove-view:open-source`: open the selected `.ipynb` file as plain text.
 
-## Provided Service `search-adapter`
+## Provided Service `jove.adapter`
 
-Allows [search-panel](https://github.com/asiloisad/pulsar-search-panel) to search and replace cell source in the active notebook through the buffer find panel:
+Allows [jove-repl](https://github.com/lumine-code/jove-repl) to execute notebook cells using its normal run commands. The adapter maps notebook cells to run targets, supplies source text and metadata, routes kernel output back into cells, stores execution counts, and controls kernel-related focus and navigation.
 
-- `search-panel:show`, `search-panel:find-next`, `search-panel:find-previous`, `search-panel:replace-current`, and `search-panel:replace-all` operate on notebook cell source while the notebook is the active pane item.
-- Search scans all cells and reports the total match count in the find panel.
-- Navigation enters edit mode, scrolls to the matching cell, focuses its editor, and selects the current match so typing can immediately replace it.
-- Markdown cells are searched by source text. If a match is in a rendered markdown cell, navigation switches the notebook to edit mode before selecting the text.
-- Replace works across code, markdown, and raw cells and updates the notebook document model.
-- Transient search highlights and search-created selections are cleared when the notebook stops being the active search target.
+This service is provided as `jove.adapter@1.0.0` through `provideJoveAdapter`.
 
-This service is provided as `search-adapter@1.0.0` through `provideSearchAdapter`.
+## Provided Service `jove.notebook`
 
-## Provided Service `jupyter`
-
-Provides access to notebook documents and active notebook items for packages that need notebook-aware behavior.
+Provides access to notebook documents and the active notebook item for packages that need notebook-aware behavior. It exposes `getActiveNotebook()` and `getDocumentRegistry()`.
 
 In your `package.json`:
 
 ```json
 {
   "consumedServices": {
-    "jupyter": {
+    "jove.notebook": {
       "versions": {
-        "1.0.0": "consumeJupyter"
+        "1.0.0": "consumeJoveNotebook"
       }
     }
   }
 }
 ```
 
-## Provided Service `hydrogen-adapter`
+## Provided Service `search-adapter`
 
-Allows [hydrogen-next](https://github.com/asiloisad/pulsar-hydrogen-next) to execute notebook cells using normal Hydrogen commands. The adapter maps notebook cells to run targets, supplies source text and metadata, routes kernel output back into cells, stores execution counts, and controls kernel-related focus/navigation.
+Allows the search-panel package to search and replace cell source in the active notebook through the buffer find panel:
 
-This service is provided as `hydrogen-adapter@1.0.0` through `provideHydrogenAdapter`.
+- `search-panel:show`, `search-panel:find-next`, `search-panel:find-previous`, `search-panel:replace-current`, and `search-panel:replace-all` operate on notebook cell source while the notebook is the active pane item.
+- Search scans all cells and reports the total match count in the find panel.
+- Navigation enters edit mode, scrolls to the matching cell, focuses its editor, and selects the current match so typing can immediately replace it.
+- Markdown cells are searched by source text; navigation switches a rendered markdown cell to edit mode before selecting the text.
+- Replace works across code, markdown, and raw cells and updates the notebook document model.
+
+This service is provided as `search-adapter@1.0.0` through `provideSearchAdapter`.
 
 ## Provided Service `linter-adapter`
 
-Allows [linter-bundle](https://github.com/asiloisad/pulsar-linter-bundle) to map diagnostics from the notebook backing editor to visible notebook cells. The adapter resolves messages for notebook items, finds the current/next/previous message, and reveals the corresponding cell editor location.
+Allows the linter-bundle package to map diagnostics from the notebook backing editor to visible notebook cells. The adapter resolves messages for notebook items, finds the current/next/previous message, and reveals the corresponding cell editor location.
 
 This service is provided as `linter-adapter@1.0.0` through `provideLinterItemAdapter`.
 
@@ -128,7 +116,7 @@ This service is provided as `linter-ui@1.0.0` through `provideLinterUI`.
 
 ## Provided Service `navigation-adapter`
 
-Allows [navigation-panel](https://github.com/asiloisad/pulsar-navigation-panel) to show notebook markdown headings as a document outline. Selecting a heading activates the corresponding cell and scrolls it into view.
+Allows the navigation-panel package to show notebook markdown headings as a document outline. Selecting a heading activates the corresponding cell and scrolls it into view.
 
 This service is provided as `navigation-adapter@1.0.0` through `provideNavigationAdapter`.
 
@@ -138,7 +126,7 @@ Adds tree-view commands for opening selected `.ipynb` files as notebooks or as p
 
 ## Consumed Service `simplemap`
 
-Allows notebook scrollmap markers to render in a standalone scrollbar widget when [scrollmap](https://github.com/asiloisad/pulsar-scrollmap) is available.
+Allows notebook scrollmap markers to render in a standalone scrollbar widget when the scrollmap package is available.
 
 ## Contributing
 

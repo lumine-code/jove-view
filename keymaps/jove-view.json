@@ -1,0 +1,85 @@
+{
+  "atom-workspace": {
+    "ctrl-shift-n": "jove-view:new-notebook"
+  },
+
+  ".jove-notebook.command-mode": {
+    "enter": "jove-view:enter-edit-mode",
+
+    "up": "jove-view:focus-previous-cell",
+    "down": "jove-view:focus-next-cell",
+    "k": "jove-view:focus-previous-cell",
+    "j": "jove-view:focus-next-cell",
+    "home": "jove-view:focus-first-cell",
+    "end": "jove-view:focus-last-cell",
+
+    "shift-up": "jove-view:select-previous-cell",
+    "shift-down": "jove-view:select-next-cell",
+    "shift-k": "jove-view:select-previous-cell",
+    "shift-j": "jove-view:select-next-cell",
+
+    "a": "jove-view:insert-cell-above",
+    "b": "jove-view:insert-cell-below",
+    "shift-a": "jove-view:insert-cell-above-and-extend-selection",
+    "shift-b": "jove-view:insert-cell-below-and-extend-selection",
+
+    "d d": "jove-view:delete-cell",
+
+    "x": "jove-view:cut-cell",
+    "c": "jove-view:copy-cell",
+    "v": "jove-view:paste-cell-below",
+    "shift-v": "jove-view:paste-cell-above",
+
+    "z": "jove-view:undo-cell-operation",
+    "shift-z": "jove-view:redo-cell-operation",
+
+    "y": "jove-view:change-cell-to-code",
+    "m": "jove-view:change-cell-to-markdown",
+    "r": "jove-view:change-cell-to-raw",
+
+    "o": "jove-view:toggle-cell-output",
+    "i": "jove-view:toggle-cell-input",
+
+    "alt-pageup": "smooth-scroll:scroll-up",
+    "alt-pagedown": "smooth-scroll:scroll-down",
+
+    "ctrl-shift-up": "jove-view:move-cell-up",
+    "ctrl-shift-down": "jove-view:move-cell-down",
+
+    "shift-m": "jove-view:merge-cell-below",
+
+    "ctrl-shift-d": "jove-view:duplicate-cell"
+  },
+
+  ".jove-notebook.edit-mode atom-text-editor": {
+    "ctrl-enter": "jove-repl:run-cell",
+    "shift-enter": "jove-repl:run-cell-and-move-down",
+    "alt-shift-enter": "jove-view:insert-cell-below-and-edit",
+    "escape": "jove-view:enter-command-mode"
+  },
+
+  ".jove-notebook.edit-mode": {
+    "ctrl-enter": "jove-repl:run-cell",
+    "shift-enter": "jove-repl:run-cell-and-move-down",
+    "alt-shift-enter": "jove-view:insert-cell-below-and-edit",
+    "escape": "jove-view:enter-command-mode"
+  },
+
+  ".jove-notebook": {
+    "ctrl-enter": "jove-repl:run-cell",
+    "shift-enter": "jove-repl:run-cell-and-move-down",
+    "ctrl-s": "jove-view:save",
+    "ctrl-shift-s": "jove-view:save-as",
+
+    "ctrl-k left": "pane:split-left-and-copy-active-item",
+    "ctrl-k right": "pane:split-right-and-copy-active-item",
+    "ctrl-k up": "pane:split-up-and-copy-active-item",
+    "ctrl-k down": "pane:split-down-and-copy-active-item"
+  },
+
+  ".jove-notebook atom-text-editor": {
+    "ctrl-enter": "jove-repl:run-cell",
+    "shift-enter": "jove-repl:run-cell-and-move-down",
+    "alt-shift-enter": "jove-view:insert-cell-below-and-edit"
+  }
+}

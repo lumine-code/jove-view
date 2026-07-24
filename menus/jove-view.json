@@ -1,0 +1,52 @@
+{
+  "menu": [
+    {
+      "label": "Packages",
+      "submenu": [
+        {
+          "label": "Jove View",
+          "submenu": [
+            { "label": "New Notebook", "command": "jove-view:new-notebook" },
+            { "label": "Open Notebook...", "command": "application:open-file" },
+            { "label": "Open Source", "command": "jove-view:open-source" },
+            { "type": "separator" },
+            { "label": "Clear Output", "command": "jove-view:clear-output" },
+            { "label": "Clear All Outputs", "command": "jove-view:clear-all-outputs" },
+            { "type": "separator" },
+            { "label": "Export to Python", "command": "jove-view:export-to-python" },
+            { "label": "Export to HTML", "command": "jove-view:export-to-html" }
+          ]
+        }
+      ]
+    }
+  ],
+
+  "context-menu": {
+    ".jove-notebook": [
+      { "label": "Open Source", "command": "jove-view:open-source" },
+      { "type": "separator" },
+      { "label": "Insert Cell Above", "command": "jove-view:insert-cell-above" },
+      { "label": "Insert Cell Below", "command": "jove-view:insert-cell-below" },
+      { "type": "separator" },
+      { "label": "Delete Cell", "command": "jove-view:delete-cell" },
+      { "label": "Move Cell Up", "command": "jove-view:move-cell-up" },
+      { "label": "Move Cell Down", "command": "jove-view:move-cell-down" },
+      { "type": "separator" },
+      { "label": "Change to Code", "command": "jove-view:change-cell-to-code" },
+      { "label": "Change to Markdown", "command": "jove-view:change-cell-to-markdown" },
+      { "label": "Change to Raw", "command": "jove-view:change-cell-to-raw" },
+      { "type": "separator" },
+      { "label": "Clear Output", "command": "jove-view:clear-output" },
+      { "label": "Toggle Output", "command": "jove-view:toggle-cell-output" }
+    ],
+    ".jove-cell": [
+      { "label": "Clear Output", "command": "jove-view:clear-output" },
+      { "type": "separator" },
+      { "label": "Delete Cell", "command": "jove-view:delete-cell" }
+    ],
+    ".tree-view .file .name[data-name$=\\.ipynb]": [
+      { "label": "Open Notebook", "command": "jove-view:open-notebook" },
+      { "label": "Open Source", "command": "jove-view:open-source" }
+    ]
+  }
+}

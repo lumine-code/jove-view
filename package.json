@@ -1,7 +1,12 @@
 {
-  "name": "jupyter-next",
+  "name": "jove-view",
+  "author": "lumine-code",
   "description": "Open and edit Jupyter notebooks",
-  "repository": "https://github.com/asiloisad/pulsar-jupyter-next",
+  "repository": "https://github.com/lumine-code/jove-view",
+  "bugs": {
+    "url": "https://github.com/lumine-code/jove-view/issues"
+  },
+  "homepage": "https://github.com/lumine-code/jove-view#readme",
   "keywords": [
     "jupyter",
     "notebook",
@@ -9,17 +14,22 @@
     "python",
     "editor"
   ],
-  "version": "1.2.1",
+  "version": "2.0.0",
   "license": "MIT",
   "engines": {
     "atom": ">=1.100.0 <2.0.0"
   },
   "main": "./lib/main",
+  "scripts": {
+    "test": "cd ../lumine && npm run test:only -- ../jove-view/spec",
+    "lint": "eslint .",
+    "format:check": "prettier --check ."
+  },
   "activationHooks": [
     "core:loaded-shell-environment"
   ],
   "deserializers": {
-    "JupyterNotebookEditor": "deserializeNotebookEditor"
+    "JoveNotebookEditor": "deserializeNotebookEditor"
   },
   "consumedServices": {
     "tree-view": {
@@ -34,14 +44,14 @@
     }
   },
   "providedServices": {
-    "jupyter": {
+    "jove.notebook": {
       "versions": {
-        "1.0.0": "provideJupyter"
+        "1.0.0": "provideJoveNotebook"
       }
     },
-    "hydrogen-adapter": {
+    "jove.adapter": {
       "versions": {
-        "1.0.0": "provideHydrogenAdapter"
+        "1.0.0": "provideJoveAdapter"
       }
     },
     "linter-adapter": {
@@ -81,7 +91,7 @@
         "useOpener": {
           "order": 1,
           "title": "Use Workspace Opener",
-          "description": "Open .ipynb files with jupyter-next through the Pulsar workspace opener.",
+          "description": "Open .ipynb files with jove-view through the Lumine workspace opener.",
           "type": "boolean",
           "default": true
         }
@@ -153,5 +163,9 @@
         }
       }
     }
+  },
+  "devDependencies": {
+    "eslint": "^8.57.1",
+    "prettier": "^3.9.5"
   }
 }
