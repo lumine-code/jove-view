@@ -104,7 +104,7 @@ This service is provided as `search-adapter@1.0.0` through `provideSearchAdapter
 
 ## Provided Service `linter-adapter`
 
-Allows the linter-bundle package to map diagnostics from the notebook backing editor to visible notebook cells. The adapter resolves messages for notebook items, finds the current/next/previous message, and reveals the corresponding cell editor location.
+Allows the linter package to map diagnostics from the notebook backing editor to visible notebook cells. The adapter resolves messages for notebook items, finds the current/next/previous message, and reveals the corresponding cell editor location.
 
 This service is provided as `linter-adapter@1.0.0` through `provideLinterItemAdapter`.
 
