@@ -45,14 +45,14 @@ describe("jupyter-view package assets", () => {
     expect(cssWithoutComments).not.toMatch(/\bfade\(|\baverage\(|\blighten\(/);
   });
 
-  it("provides the jupyter.* services and keeps jupyter as a descriptive keyword", () => {
+  it("provides the jupyter.* services and keeps keywords clear of the name", () => {
     const pkg = JSON.parse(read("package.json"));
     expect(pkg.name).toBe("jupyter-view");
     expect(pkg.providedServices["jupyter.adapter"]).toBeDefined();
     expect(pkg.providedServices["jupyter.notebook"]).toBeDefined();
     expect(pkg.providedServices["hydrogen-adapter"]).toBeUndefined();
     expect(pkg.providedServices["jupyter"]).toBeUndefined();
-    // Jupyter is the target platform, so it stays as a package keyword.
-    expect(pkg.keywords).toContain("jupyter");
+    // "jupyter" is a substring of the package name, so it is not a keyword.
+    expect(pkg.keywords).not.toContain("jupyter");
   });
 });
