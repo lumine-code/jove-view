@@ -16,7 +16,7 @@ Open and edit Jupyter notebooks.
 
 ## Installation
 
-To install `jove-view` search for *jove-view* in the Install pane of the Lumine settings or run `lumine --install lumine-code/jove-view`.
+To install `jove-view` search for _jove-view_ in the Install pane of the Lumine settings or run `lumine --install lumine-code/jove-view`.
 
 ## Commands
 
