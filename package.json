@@ -86,14 +86,12 @@
       "title": "Notebook",
       "description": "Notebook-level settings.",
       "type": "object",
-      "order": 1,
       "collapsed": true,
       "properties": {
         "useOpener": {
           "title": "Use Workspace Opener",
           "description": "Open .ipynb files with jove-view through the Lumine workspace opener.",
           "type": "boolean",
-          "order": 1,
           "default": true
         }
       }
@@ -102,14 +100,12 @@
       "title": "Input Cell",
       "description": "Input cell display and editing settings.",
       "type": "object",
-      "order": 2,
       "collapsed": true,
       "properties": {
         "maxHeight": {
           "title": "Max Height",
           "description": "Maximum height in pixels for input cells. Zero means unlimited.",
           "type": "integer",
-          "order": 1,
           "minimum": 0,
           "default": 0
         }
@@ -119,14 +115,12 @@
       "title": "Output Cell",
       "description": "Output cell display settings.",
       "type": "object",
-      "order": 3,
       "collapsed": true,
       "properties": {
         "maxHeight": {
           "title": "Max Height",
           "description": "Maximum height in pixels for output cells before scrolling.",
           "type": "integer",
-          "order": 1,
           "minimum": 100,
           "default": 1000
         }
@@ -136,21 +130,18 @@
       "title": "Scrollmap",
       "description": "Scrollmap marker settings.",
       "type": "object",
-      "order": 4,
       "collapsed": true,
       "properties": {
         "enabled": {
           "title": "Show Scrollmap",
           "description": "Show markdown heading and selected cell markers on the notebook scrollbar when the scrollmap package is available.",
           "type": "boolean",
-          "order": 1,
           "default": true
         },
         "threshold": {
           "title": "Threshold",
           "description": "Hide scrollmap markers if their count exceeds this value. Zero means no limit.",
           "type": "integer",
-          "order": 2,
           "minimum": 0,
           "default": 0
         },
@@ -158,7 +149,6 @@
           "title": "Depth",
           "description": "Maximum markdown heading depth to show in the scrollmap. Zero means no limit.",
           "type": "integer",
-          "order": 3,
           "minimum": 0,
           "default": 0
         }
