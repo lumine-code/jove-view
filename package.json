@@ -12,7 +12,8 @@
     "notebook",
     "ipynb",
     "python",
-    "editor"
+    "cell",
+    "kernel"
   ],
   "version": "1.0.0",
   "license": "MIT",
@@ -33,6 +34,11 @@
     "JoveNotebookEditor": "deserializeNotebookEditor"
   },
   "consumedServices": {
+    "autocomplete.watchEditor": {
+      "versions": {
+        "^1.0.0": "consumeAutocompleteWatchEditor"
+      }
+    },
     "tree-view": {
       "versions": {
         "^1.0.0": "consumeTreeView"

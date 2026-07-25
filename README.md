@@ -78,6 +78,7 @@ Commands available in `.tree-view`:
 - **linter-adapter** (`1.0.0`): provided to map linter diagnostics from the backing editor onto the visible notebook cells.
 - **linter-ui** (`1.0.0`): provided to receive linter message updates so notebook scrollmap markers stay in sync with diagnostics.
 - **navigation-adapter** (`1.0.0`): provided to show notebook markdown headings as a document outline, activating and revealing the cell on selection.
+- **autocomplete.watchEditor** (`^1.0.0`): consumed to keep autocomplete active in notebook cell editors.
 - **tree-view** (`^1.0.0`): consumed to add tree-view entries for opening a selected `.ipynb` as a notebook or as plain JSON source.
 - **simplemap** (`^1.0.0`): consumed to render notebook scrollmap markers in a standalone scrollbar widget.
 
