@@ -1,5 +1,3 @@
-/* global describe, it, expect */
-
 const { renderLatexToSvg, stripDelimiters } = require("../lib/latex");
 
 // Exercises the async ESM MathJax load path that renders stored `text/latex`
