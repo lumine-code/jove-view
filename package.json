@@ -83,84 +83,84 @@
   },
   "configSchema": {
     "notebook": {
-      "order": 1,
       "title": "Notebook",
       "description": "Notebook-level settings.",
       "type": "object",
+      "order": 1,
       "collapsed": true,
       "properties": {
         "useOpener": {
-          "order": 1,
           "title": "Use Workspace Opener",
           "description": "Open .ipynb files with jove-view through the Lumine workspace opener.",
           "type": "boolean",
+          "order": 1,
           "default": true
         }
       }
     },
     "input": {
-      "order": 2,
       "title": "Input Cell",
       "description": "Input cell display and editing settings.",
       "type": "object",
+      "order": 2,
       "collapsed": true,
       "properties": {
         "maxHeight": {
-          "order": 1,
           "title": "Max Height",
           "description": "Maximum height in pixels for input cells. Zero means unlimited.",
           "type": "integer",
-          "default": 0,
-          "minimum": 0
+          "order": 1,
+          "minimum": 0,
+          "default": 0
         }
       }
     },
     "output": {
-      "order": 3,
       "title": "Output Cell",
       "description": "Output cell display settings.",
       "type": "object",
+      "order": 3,
       "collapsed": true,
       "properties": {
         "maxHeight": {
-          "order": 1,
           "title": "Max Height",
           "description": "Maximum height in pixels for output cells before scrolling.",
           "type": "integer",
-          "default": 1000,
-          "minimum": 100
+          "order": 1,
+          "minimum": 100,
+          "default": 1000
         }
       }
     },
     "scrollmap": {
-      "order": 4,
       "title": "Scrollmap",
       "description": "Scrollmap marker settings.",
       "type": "object",
+      "order": 4,
       "collapsed": true,
       "properties": {
         "enabled": {
-          "order": 1,
           "title": "Show Scrollmap",
           "description": "Show markdown heading and selected cell markers on the notebook scrollbar when the scrollmap package is available.",
           "type": "boolean",
+          "order": 1,
           "default": true
         },
         "threshold": {
-          "order": 2,
           "title": "Threshold",
           "description": "Hide scrollmap markers if their count exceeds this value. Zero means no limit.",
           "type": "integer",
-          "default": 0,
-          "minimum": 0
+          "order": 2,
+          "minimum": 0,
+          "default": 0
         },
         "depth": {
-          "order": 3,
           "title": "Depth",
           "description": "Maximum markdown heading depth to show in the scrollmap. Zero means no limit.",
           "type": "integer",
-          "default": 0,
-          "minimum": 0
+          "order": 3,
+          "minimum": 0,
+          "default": 0
         }
       }
     }
