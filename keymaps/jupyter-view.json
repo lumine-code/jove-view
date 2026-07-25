@@ -1,0 +1,85 @@
+{
+  "atom-workspace": {
+    "ctrl-shift-n": "jupyter-view:new-notebook"
+  },
+
+  ".jupyter-notebook.command-mode": {
+    "enter": "jupyter-view:enter-edit-mode",
+
+    "up": "jupyter-view:focus-previous-cell",
+    "down": "jupyter-view:focus-next-cell",
+    "k": "jupyter-view:focus-previous-cell",
+    "j": "jupyter-view:focus-next-cell",
+    "home": "jupyter-view:focus-first-cell",
+    "end": "jupyter-view:focus-last-cell",
+
+    "shift-up": "jupyter-view:select-previous-cell",
+    "shift-down": "jupyter-view:select-next-cell",
+    "shift-k": "jupyter-view:select-previous-cell",
+    "shift-j": "jupyter-view:select-next-cell",
+
+    "a": "jupyter-view:insert-cell-above",
+    "b": "jupyter-view:insert-cell-below",
+    "shift-a": "jupyter-view:insert-cell-above-and-extend-selection",
+    "shift-b": "jupyter-view:insert-cell-below-and-extend-selection",
+
+    "d d": "jupyter-view:delete-cell",
+
+    "x": "jupyter-view:cut-cell",
+    "c": "jupyter-view:copy-cell",
+    "v": "jupyter-view:paste-cell-below",
+    "shift-v": "jupyter-view:paste-cell-above",
+
+    "z": "jupyter-view:undo-cell-operation",
+    "shift-z": "jupyter-view:redo-cell-operation",
+
+    "y": "jupyter-view:change-cell-to-code",
+    "m": "jupyter-view:change-cell-to-markdown",
+    "r": "jupyter-view:change-cell-to-raw",
+
+    "o": "jupyter-view:toggle-cell-output",
+    "i": "jupyter-view:toggle-cell-input",
+
+    "alt-pageup": "smooth-scroll:scroll-up",
+    "alt-pagedown": "smooth-scroll:scroll-down",
+
+    "ctrl-shift-up": "jupyter-view:move-cell-up",
+    "ctrl-shift-down": "jupyter-view:move-cell-down",
+
+    "shift-m": "jupyter-view:merge-cell-below",
+
+    "ctrl-shift-d": "jupyter-view:duplicate-cell"
+  },
+
+  ".jupyter-notebook.edit-mode atom-text-editor": {
+    "ctrl-enter": "jupyter-repl:run-cell",
+    "shift-enter": "jupyter-repl:run-cell-and-move-down",
+    "alt-shift-enter": "jupyter-view:insert-cell-below-and-edit",
+    "escape": "jupyter-view:enter-command-mode"
+  },
+
+  ".jupyter-notebook.edit-mode": {
+    "ctrl-enter": "jupyter-repl:run-cell",
+    "shift-enter": "jupyter-repl:run-cell-and-move-down",
+    "alt-shift-enter": "jupyter-view:insert-cell-below-and-edit",
+    "escape": "jupyter-view:enter-command-mode"
+  },
+
+  ".jupyter-notebook": {
+    "ctrl-enter": "jupyter-repl:run-cell",
+    "shift-enter": "jupyter-repl:run-cell-and-move-down",
+    "ctrl-s": "jupyter-view:save",
+    "ctrl-shift-s": "jupyter-view:save-as",
+
+    "ctrl-k left": "pane:split-left-and-copy-active-item",
+    "ctrl-k right": "pane:split-right-and-copy-active-item",
+    "ctrl-k up": "pane:split-up-and-copy-active-item",
+    "ctrl-k down": "pane:split-down-and-copy-active-item"
+  },
+
+  ".jupyter-notebook atom-text-editor": {
+    "ctrl-enter": "jupyter-repl:run-cell",
+    "shift-enter": "jupyter-repl:run-cell-and-move-down",
+    "alt-shift-enter": "jupyter-view:insert-cell-below-and-edit"
+  }
+}

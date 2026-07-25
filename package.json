@@ -1,14 +1,13 @@
 {
-  "name": "jove-view",
+  "name": "jupyter-view",
   "author": "lumine-code",
   "description": "Open and edit Jupyter notebooks.",
-  "repository": "https://github.com/lumine-code/jove-view",
+  "repository": "https://github.com/lumine-code/jupyter-view",
   "bugs": {
-    "url": "https://github.com/lumine-code/jove-view/issues"
+    "url": "https://github.com/lumine-code/jupyter-view/issues"
   },
-  "homepage": "https://github.com/lumine-code/jove-view#readme",
+  "homepage": "https://github.com/lumine-code/jupyter-view#readme",
   "keywords": [
-    "jupyter",
     "notebook",
     "ipynb",
     "python",
@@ -22,7 +21,7 @@
   },
   "main": "./lib/main",
   "scripts": {
-    "test": "cd ../lumine && npm run test:only -- ../jove-view/spec",
+    "test": "cd ../lumine && npm run test:only -- ../jupyter-view/spec",
     "lint": "eslint . --max-warnings 0",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
@@ -31,7 +30,7 @@
     "core:loaded-shell-environment"
   ],
   "deserializers": {
-    "JoveNotebookEditor": "deserializeNotebookEditor"
+    "JupyterNotebookEditor": "deserializeNotebookEditor"
   },
   "consumedServices": {
     "autocomplete.watchEditor": {
@@ -51,14 +50,14 @@
     }
   },
   "providedServices": {
-    "jove.notebook": {
+    "jupyter.notebook": {
       "versions": {
-        "1.0.0": "provideJoveNotebook"
+        "1.0.0": "provideJupyterNotebook"
       }
     },
-    "jove.adapter": {
+    "jupyter.adapter": {
       "versions": {
-        "1.0.0": "provideJoveAdapter"
+        "1.0.0": "provideJupyterAdapter"
       }
     },
     "linter-adapter": {
@@ -97,7 +96,7 @@
       "properties": {
         "useOpener": {
           "title": "Use Workspace Opener",
-          "description": "Open .ipynb files with jove-view through the Lumine workspace opener.",
+          "description": "Open .ipynb files with jupyter-view through the Lumine workspace opener.",
           "type": "boolean",
           "default": true
         }

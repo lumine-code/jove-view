@@ -1,4 +1,4 @@
-@keyframes jove-cell-running-pulse {
+@keyframes jupyter-cell-running-pulse {
   0% {
     border-left-color: rgb(from var(--text-color-warning) r g b / 0.65);
   }
@@ -15,7 +15,7 @@
    and is clipped by the gutter's overflow. Translating it by exactly one tile
    (14.142px = 10px * sqrt(2)) marches the stripes with no seam at any edge, and
    transform animates on the compositor without repainting the gutter each frame. */
-@keyframes jove-gutter-hatch-march {
+@keyframes jupyter-gutter-hatch-march {
   from {
     transform: translate(0, 0);
   }
@@ -24,16 +24,16 @@
   }
 }
 
-/* All styles scoped under .jove-view */
-.jove-view {
-  --jove-cell-border: rgb(from var(--text-color) r g b / 0.1);
-  --jove-cell-active-border: var(--text-color-info);
-  --jove-cell-error-border: var(--text-color-error);
-  --jove-gutter-width: 72px;
-  --jove-cell-padding: 6px;
+/* All styles scoped under .jupyter-view */
+.jupyter-view {
+  --jupyter-cell-border: rgb(from var(--text-color) r g b / 0.1);
+  --jupyter-cell-active-border: var(--text-color-info);
+  --jupyter-cell-error-border: var(--text-color-error);
+  --jupyter-gutter-width: 72px;
+  --jupyter-cell-padding: 6px;
 
   /* Stable container element (used for ViewRegistry caching workaround) */
-  &.jove-notebook-container {
+  &.jupyter-notebook-container {
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -41,7 +41,7 @@
   }
 
   /* Main notebook container */
-  .jove-notebook {
+  .jupyter-notebook {
     display: flex;
     flex-direction: column;
     position: relative;
@@ -50,55 +50,55 @@
     overflow: hidden;
   }
 
-  .jove-header-map.simplemap {
+  .jupyter-header-map.simplemap {
     .marker {
-      &.marker-jove-h1 {
+      &.marker-jupyter-h1 {
         z-index: 15;
         height: 4px;
         background-color: var(--ui-site-color-1);
       }
 
-      &.marker-jove-h2 {
+      &.marker-jupyter-h2 {
         z-index: 14;
         height: 3px;
         background-color: var(--ui-site-color-2);
       }
 
-      &.marker-jove-h3 {
+      &.marker-jupyter-h3 {
         z-index: 13;
         height: 2px;
         background-color: var(--ui-site-color-3);
       }
 
-      &.marker-jove-h4 {
+      &.marker-jupyter-h4 {
         z-index: 12;
         height: 2px;
         background-color: var(--ui-site-color-4);
       }
 
-      &.marker-jove-h5,
-      &.marker-jove-h6 {
+      &.marker-jupyter-h5,
+      &.marker-jupyter-h6 {
         z-index: 11;
         height: 2px;
         background-color: var(--ui-site-color-5);
       }
 
-      &.marker-jove-selected {
+      &.marker-jupyter-selected {
         z-index: 18;
         min-height: 3px;
-        background-color: rgb(from var(--jove-cell-active-border) r g b / 0.5);
+        background-color: rgb(from var(--jupyter-cell-active-border) r g b / 0.5);
       }
 
-      &.marker-jove-active {
+      &.marker-jupyter-active {
         z-index: 18;
         min-height: 3px;
       }
 
-      &.marker-jove-active-command {
-        background-color: var(--jove-cell-active-border);
+      &.marker-jupyter-active-command {
+        background-color: var(--jupyter-cell-active-border);
       }
 
-      &.marker-jove-active-edit {
+      &.marker-jupyter-active-edit {
         background-color: var(--text-color-success);
       }
 
@@ -122,7 +122,7 @@
   }
 
   /* Toolbar */
-  .jove-notebook-toolbar {
+  .jupyter-notebook-toolbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -157,13 +157,13 @@
   }
 
   /* Cells container */
-  .jove-notebook-cells {
+  .jupyter-notebook-cells {
     flex: 1;
     overflow-y: auto;
   }
 
   /* Mode-specific styles */
-  .jove-notebook {
+  .jupyter-notebook {
     /* Command mode - blue border on active cell */
     &.command-mode {
       .mode-indicator {
@@ -171,7 +171,7 @@
         color: var(--text-color-info);
       }
 
-      .jove-cell.active {
+      .jupyter-cell.active {
         border-color: var(--text-color-info);
         border-left-color: var(--text-color-info);
       }
@@ -184,7 +184,7 @@
         color: var(--text-color-success);
       }
 
-      .jove-cell.active {
+      .jupyter-cell.active {
         border-color: var(--text-color-success);
         border-left-color: var(--text-color-success);
       }
@@ -192,7 +192,7 @@
   }
 
   /* Individual cell */
-  .jove-cell {
+  .jupyter-cell {
     display: flex;
     margin-bottom: 10px;
     border: 1px solid var(--app-background-color);
@@ -208,19 +208,19 @@
     }
 
     &.active {
-      border-color: var(--jove-cell-active-border);
-      border-left-color: var(--jove-cell-active-border);
+      border-color: var(--jupyter-cell-active-border);
+      border-left-color: var(--jupyter-cell-active-border);
     }
 
     &.error {
-      border-color: var(--jove-cell-error-border);
-      border-left-color: var(--jove-cell-error-border);
+      border-color: var(--jupyter-cell-error-border);
+      border-left-color: var(--jupyter-cell-error-border);
     }
 
     /* Executing */
     &.running {
       border-left-color: rgb(from var(--text-color-warning) r g b / 0.65);
-      animation: jove-cell-running-pulse 1.8s ease-in-out infinite;
+      animation: jupyter-cell-running-pulse 1.8s ease-in-out infinite;
       transition: none;
 
       .execution-count {
@@ -260,11 +260,11 @@
        isolate so its z-index: -1 stays above this gutter's own background. */
     overflow: hidden;
     isolation: isolate;
-    width: var(--jove-gutter-width);
+    width: var(--jupyter-gutter-width);
     flex-shrink: 0;
-    padding: var(--jove-cell-padding);
+    padding: var(--jupyter-cell-padding);
     background-color: rgb(from var(--text-color) r g b / 0.03);
-    border-right: 1px solid var(--jove-cell-border);
+    border-right: 1px solid var(--jupyter-cell-border);
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -329,7 +329,7 @@
         transparent 4px,
         transparent 10px
       );
-      animation: jove-gutter-hatch-march 1.4s linear infinite;
+      animation: jupyter-gutter-hatch-march 1.4s linear infinite;
       pointer-events: none;
     }
   }
@@ -344,7 +344,7 @@
 
   /* Cell input area */
   .cell-input {
-    padding: var(--jove-cell-padding);
+    padding: var(--jupyter-cell-padding);
 
     .cell-editor-container {
       atom-text-editor {
@@ -355,7 +355,7 @@
         }
       }
 
-      .jove-cell-editor {
+      .jupyter-cell-editor {
         border: none;
         background: transparent;
       }
@@ -363,8 +363,8 @@
   }
 
   /* Hide cursor-line in non-active cells and in command mode */
-  .jove-cell:not(.active),
-  .jove-notebook.command-mode .jove-cell {
+  .jupyter-cell:not(.active),
+  .jupyter-notebook.command-mode .jupyter-cell {
     atom-text-editor {
       .cursor-line {
         background-color: transparent !important;
@@ -426,13 +426,13 @@
 
   /* Cell output area (only styled when it has content) */
   .cell-output-container:not(:empty) {
-    border-top: 1px solid var(--jove-cell-border);
-    padding: var(--jove-cell-padding);
+    border-top: 1px solid var(--jupyter-cell-border);
+    padding: var(--jupyter-cell-padding);
     background-color: transparent;
   }
 
   /* Output rendering */
-  .jove-outputs {
+  .jupyter-outputs {
     font-family: var(--editor-font-family), var(--font-family);
     font-size: var(--editor-font-size, var(--font-size));
     line-height: 1.4;
@@ -684,7 +684,7 @@
     gap: 2px;
   }
 
-  .jove-cell {
+  .jupyter-cell {
     position: relative;
 
     &:hover .cell-actions {
@@ -693,7 +693,7 @@
   }
 
   /* Loading state */
-  .jove-notebook-loading {
+  .jupyter-notebook-loading {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -720,7 +720,7 @@
       text-align: center;
     }
   }
-} /* end .jove-view */
+} /* end .jupyter-view */
 
 /* Animations (at root level) */
 @keyframes pulse {
@@ -752,7 +752,7 @@
 /* Dark theme adjustments */
 .theme-one-dark-ui,
 .theme-atom-dark-ui {
-  .jove-view .jove-notebook {
+  .jupyter-view .jupyter-notebook {
     .cell-output {
       background-color: rgb(0 0 0 / 0.2);
     }
@@ -762,7 +762,7 @@
 /* Light theme adjustments */
 .theme-one-light-ui,
 .theme-atom-light-ui {
-  .jove-view .jove-notebook {
+  .jupyter-view .jupyter-notebook {
     .cell-gutter {
       background-color: rgb(0 0 0 / 0.03);
     }

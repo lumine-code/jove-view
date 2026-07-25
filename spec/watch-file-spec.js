@@ -12,7 +12,7 @@ describe("watchFile (notebook document watcher migration)", () => {
   let dir, file, handle;
 
   beforeEach(() => {
-    dir = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), "jove-view-watch-")));
+    dir = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), "jupyter-view-watch-")));
     file = path.join(dir, "notebook.ipynb");
     fs.writeFileSync(file, "{}\n");
   });
