@@ -14,7 +14,7 @@
     "python",
     "editor"
   ],
-  "version": "2.1.0",
+  "version": "1.0.0",
   "license": "MIT",
   "engines": {
     "atom": ">=1.100.0 <2.0.0"
@@ -35,12 +35,12 @@
   "consumedServices": {
     "tree-view": {
       "versions": {
-        "1.0.0": "consumeTreeView"
+        "^1.0.0": "consumeTreeView"
       }
     },
     "simplemap": {
       "versions": {
-        "1.0.0": "consumeSimpleMap"
+        "^1.0.0": "consumeSimpleMap"
       }
     }
   },
