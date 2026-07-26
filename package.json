@@ -60,12 +60,12 @@
         "1.0.0": "provideJupyterAdapter"
       }
     },
-    "linter-adapter": {
+    "linter.adapter": {
       "versions": {
-        "1.0.0": "provideLinterItemAdapter"
+        "1.0.0": "provideLinterAdapter"
       }
     },
-    "linter-ui": {
+    "linter.ui": {
       "versions": {
         "1.0.0": "provideLinterUI"
       }
