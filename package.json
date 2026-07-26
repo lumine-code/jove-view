@@ -38,9 +38,9 @@
         "^1.0.0": "consumeAutocompleteWatchEditor"
       }
     },
-    "tree-view": {
+    "tree-view.selection": {
       "versions": {
-        "^1.0.0": "consumeTreeView"
+        "^1.0.0": "consumeTreeViewSelection"
       }
     },
     "scrollmap.widget": {
