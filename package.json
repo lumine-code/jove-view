@@ -43,9 +43,9 @@
         "^1.0.0": "consumeTreeView"
       }
     },
-    "simplemap": {
+    "scrollmap.widget": {
       "versions": {
-        "^1.0.0": "consumeSimpleMap"
+        "^1.0.0": "consumeScrollmapWidget"
       }
     }
   },
@@ -70,12 +70,12 @@
         "1.0.0": "provideLinterUI"
       }
     },
-    "navigation-adapter": {
+    "navigation.adapter": {
       "versions": {
         "1.0.0": "provideNavigationAdapter"
       }
     },
-    "search-adapter": {
+    "search.adapter": {
       "versions": {
         "1.0.0": "provideSearchAdapter"
       }

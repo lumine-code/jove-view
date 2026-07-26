@@ -74,13 +74,13 @@ Commands available in `.tree-view`:
 
 - **jupyter.adapter** (`1.0.0`): provided to let [jupyter-repl](https://github.com/lumine-code/jupyter-repl) execute notebook cells with its normal run commands, routing kernel output, execution counts, focus, and navigation back into the notebook.
 - **jupyter.notebook** (`1.0.0`): provided to expose notebook documents and the active notebook item to packages that need notebook-aware behavior.
-- **search-adapter** (`1.0.0`): provided to let the search-panel package find and replace cell source in the active notebook.
+- **search.adapter** (`1.0.0`): provided to let the search-panel package find and replace cell source in the active notebook.
 - **linter.adapter** (`1.0.0`): provided to map linter diagnostics from the backing editor onto the visible notebook cells.
 - **linter.ui** (`1.0.0`): provided to receive linter message updates so notebook scrollmap markers stay in sync with diagnostics.
-- **navigation-adapter** (`1.0.0`): provided to show notebook markdown headings as a document outline, activating and revealing the cell on selection.
+- **navigation.adapter** (`1.0.0`): provided to show notebook markdown headings as a document outline, activating and revealing the cell on selection.
 - **autocomplete.watchEditor** (`^1.0.0`): consumed to keep autocomplete active in notebook cell editors.
 - **tree-view** (`^1.0.0`): consumed to add tree-view entries for opening a selected `.ipynb` as a notebook or as plain JSON source.
-- **simplemap** (`^1.0.0`): consumed to render notebook scrollmap markers in a standalone scrollbar widget.
+- **scrollmap.widget** (`^1.0.0`): consumed to render notebook scrollmap markers in a standalone scrollbar widget.
 
 ## Integration
 
@@ -100,7 +100,7 @@ The service exposes `getActiveNotebook()` and `getDocumentRegistry()`. Consume i
 }
 ```
 
-### `search-adapter`
+### `search.adapter`
 
 While a notebook is the active pane item, `search-panel:show`, `search-panel:find-next`, `search-panel:find-previous`, `search-panel:replace-current`, and `search-panel:replace-all` operate on cell source:
 
