@@ -33,7 +33,7 @@
     "JupyterNotebookEditor": "deserializeNotebookEditor"
   },
   "consumedServices": {
-    "autocomplete.watchEditor": {
+    "autocomplete.watch-editor": {
       "versions": {
         "^1.0.0": "consumeAutocompleteWatchEditor"
       }
