@@ -44,7 +44,7 @@
       { "type": "separator" },
       { "label": "Delete Cell", "command": "jupyter-view:delete-cell" }
     ],
-    ".tree-view .file .name[data-name$=\\.ipynb]": [
+    ".tree-view .file[data-name$=\".ipynb\"]": [
       { "label": "Open Notebook", "command": "jupyter-view:open-notebook" },
       { "label": "Open Source", "command": "jupyter-view:open-source" }
     ]
