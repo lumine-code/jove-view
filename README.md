@@ -74,13 +74,13 @@ Commands available in `.tree-view`:
 
 - **[jupyter.adapter](docs/jupyter.adapter.md)** (`1.0.0`): provided to let [jupyter-repl](https://github.com/lumine-code/jupyter-repl) execute notebook cells with its normal run commands, routing kernel output, execution counts, focus, and navigation back into the notebook.
 - **[jupyter.notebook](docs/jupyter.notebook.md)** (`1.0.0`): provided to expose notebook documents and the active notebook item to packages that need notebook-aware behavior.
-- **[search.adapter](https://lumine-code.github.io/docs.html#services/search.adapter)** (`1.0.0`): provided to let the search-panel package find and replace cell source in the active notebook.
-- **[linter.adapter](https://lumine-code.github.io/docs.html#services/linter.adapter)** (`1.0.0`): provided to map linter diagnostics from the backing editor onto the visible notebook cells.
-- **[linter.ui](https://lumine-code.github.io/docs.html#services/linter.ui)** (`1.0.0`): provided to receive linter message updates so notebook scrollmap markers stay in sync with diagnostics.
-- **[navigation.adapter](https://lumine-code.github.io/docs.html#services/navigation.adapter)** (`1.0.0`): provided to show notebook markdown headings as a document outline, activating and revealing the cell on selection.
-- **[autocomplete.watch-editor](https://lumine-code.github.io/docs.html#services/autocomplete.watch-editor)** (`^1.0.0`): consumed to keep autocomplete active in notebook cell editors.
-- **[tree-view.selection](https://lumine-code.github.io/docs.html#services/tree-view.selection)** (`^1.0.0`): consumed to add tree-view entries for opening a selected `.ipynb` as a notebook or as plain JSON source.
-- **[scrollmap.widget](https://lumine-code.github.io/docs.html#services/scrollmap.widget)** (`^1.0.0`): consumed to render notebook scrollmap markers in a standalone scrollbar widget.
+- **search.adapter** (`1.0.0`): provided to let the search-panel package find and replace cell source in the active notebook.
+- **linter.adapter** (`1.0.0`): provided to map linter diagnostics from the backing editor onto the visible notebook cells.
+- **linter.ui** (`1.0.0`): provided to receive linter message updates so notebook scrollmap markers stay in sync with diagnostics.
+- **navigation.adapter** (`1.0.0`): provided to show notebook markdown headings as a document outline, activating and revealing the cell on selection.
+- **autocomplete.watch-editor** (`^1.0.0`): consumed to keep autocomplete active in notebook cell editors.
+- **tree-view.selection** (`^1.0.0`): consumed to add tree-view entries for opening a selected `.ipynb` as a notebook or as plain JSON source.
+- **scrollmap.widget** (`^1.0.0`): consumed to render notebook scrollmap markers in a standalone scrollbar widget.
 
 ## Integration
 
