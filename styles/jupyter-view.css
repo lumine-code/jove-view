@@ -102,7 +102,7 @@
         background-color: var(--text-color-success);
       }
 
-      /* Linter message markers (style matches the scrollmap-linter package).
+      /* Linter message markers (style matches the marker-linter package).
          The `left` class on the marker pins it to the left side of the strip
          via the Simplemap framework's built-in rules; we only colour it here. */
       &.marker-linter {
