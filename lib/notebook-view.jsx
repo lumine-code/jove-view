@@ -1,38 +1,31 @@
 /**
- * NotebookView - DOM-based component for rendering Jupyter notebooks
+ * NotebookView - the notebook's toolbar and its list of cells.
  */
 
+const etch = require("@lumine-code/etch");
 const { CompositeDisposable, Disposable } = require("atom");
 const CellView = require("./cell-view");
 const { getNotebookLanguage } = require("./notebook-language");
 
-/**
- * NotebookView manages rendering of the entire notebook.
- * Uses plain DOM for reliable integration with Lumine.
- */
 class NotebookView {
   constructor(props) {
     this.props = props;
     this.mode = "command"; // 'command' or 'edit'
-    this.cellViews = new Map(); // cell.id -> CellView
     this.selectedCells = new Set(); // Set of selected cell indices
     this._selectionAnchor = null; // Anchor index for range-extension (shift+arrow / shift+click)
     this.draggingCellIndex = null;
-    this.cellsContainer = null;
     this._autoScrollInterval = null;
     this._autoScrollSpeed = 0;
     this._mouseButtonDown = false; // Track mouse button state for selection
     this._pendingScrollY = 0;
     this._scrollAnimId = null;
-    this._scrollHandler = null;
+    this._observedContainer = null;
     this.scrollCallbacks = new Set();
     this.selectionCallbacks = new Set();
+    this._tooltips = new CompositeDisposable();
+    this._tooltipTargets = new WeakSet();
 
-    this.element = document.createElement("div");
-    this.element.className = "jupyter-notebook command-mode";
-    this.element.setAttribute("tabindex", "-1");
-
-    this.render();
+    etch.initialize(this);
 
     // Set up focus tracking for mode switching
     this.element.addEventListener("focusin", this.handleFocusIn.bind(this));
@@ -63,63 +56,242 @@ class NotebookView {
         this._mouseButtonDown = false;
       }),
     );
+
+    // The container only exists once the first render has run.
+    this.readAfterUpdate();
+  }
+
+  // Buttons that only dispatch a command, so the toolbar can list them.
+  commandButtons() {
+    return [
+      ["jupyter-repl:run-cell", "icon-playback-play", "Run Cell"],
+      ["jupyter-repl:run-cell-and-move-down", "icon-jump-down", "Run Cell and Move Down"],
+      ["jupyter-repl:run-all", "icon-playback-fast-forward", "Run All Cells"],
+      null,
+      ["jupyter-repl:interrupt-kernel", "icon-stop", "Interrupt Kernel"],
+      ["jupyter-repl:restart-kernel", "icon-sync", "Restart Kernel"],
+      ["jupyter-repl:shutdown-kernel", "icon-circle-slash", "Shutdown Kernel"],
+    ];
+  }
+
+  // Buttons that call the editor directly, with the command they are bound to
+  // shown in the tooltip.
+  editorButtons() {
+    return [
+      ["icon-arrow-up", "Insert Cell Above", "jupyter-view:insert-cell-above", "insertCellAbove"],
+      ["icon-arrow-down", "Insert Cell Below", "jupyter-view:insert-cell-below", "insertCellBelow"],
+      ["icon-chevron-up", "Move Cell Up", "jupyter-view:move-cell-up", "moveCellUp"],
+      ["icon-chevron-down", "Move Cell Down", "jupyter-view:move-cell-down", "moveCellDown"],
+      ["icon-trashcan", "Delete Cell", "jupyter-view:delete-cell", "deleteCell"],
+      null,
+      ["icon-remove-close", "Clear Cell Output", "jupyter-view:clear-output", "clearOutput"],
+      [
+        "icon-primitive-square",
+        "Clear All Outputs",
+        "jupyter-view:clear-all-outputs",
+        "clearAllOutputs",
+      ],
+    ];
+  }
+
+  dispatchCommand = (command) => (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    this.activatePane();
+    atom.commands.dispatch(this.element, command);
+  };
+
+  callEditor = (method) => () => {
+    const { editor } = this.props;
+    if (editor) editor[method]();
+  };
+
+  handleCellTypeChange = (event) => {
+    const { editor } = this.props;
+    if (editor) editor.changeCellType(event.target.value);
+  };
+
+  // Scrolling the dropdown cycles the type, which is quicker than opening it.
+  handleCellTypeWheel = (event) => {
+    const { editor } = this.props;
+    const select = this.refs.cellTypeSelect;
+    if (!editor || !select) return;
+    event.preventDefault();
+    const options = Array.from(select.options);
+    const current = options.findIndex((option) => option.value === select.value);
+    const next = Math.max(0, Math.min(options.length - 1, current + (event.deltaY > 0 ? 1 : -1)));
+    if (next === current) return;
+    select.value = options[next].value;
+    editor.changeCellType(options[next].value);
+  };
+
+  activeCellType() {
+    const { cells, activeCellIndex } = this.props;
+    return cells && cells[activeCellIndex] ? cells[activeCellIndex].type : "code";
+  }
+
+  renderToolbar() {
+    return (
+      <div className="jupyter-notebook-toolbar">
+        <div className="toolbar-left">
+          {this.commandButtons().map((entry, index) =>
+            entry ? (
+              <button
+                key={entry[0]}
+                className={`btn btn-sm icon ${entry[1]}`}
+                ref={`command-${entry[0]}`}
+                onClick={this.dispatchCommand(entry[0])}
+              />
+            ) : (
+              <div key={`sep-command-${index}`} className="toolbar-separator" />
+            ),
+          )}
+          <div className="toolbar-separator" />
+          {this.editorButtons().map((entry, index) =>
+            entry ? (
+              <button
+                key={entry[3]}
+                className={`btn btn-sm icon ${entry[0]}`}
+                ref={`editor-${entry[3]}`}
+                onClick={this.callEditor(entry[3])}
+              />
+            ) : (
+              <div key={`sep-editor-${index}`} className="toolbar-separator" />
+            ),
+          )}
+          <div className="toolbar-separator" />
+          <select
+            className="input-select cell-type-select"
+            ref="cellTypeSelect"
+            value={this.activeCellType()}
+            onChange={this.handleCellTypeChange}
+            onWheel={this.handleCellTypeWheel}
+          >
+            <option value="code">Code</option>
+            <option value="markdown">Markdown</option>
+            <option value="raw">Raw</option>
+          </select>
+          <div className="toolbar-separator" />
+          <span className="mode-indicator">{this.mode === "edit" ? "Edit" : "Command"}</span>
+        </div>
+      </div>
+    );
+  }
+
+  // Props for one cell. The navigation callbacks close over the index, so they
+  // are rebuilt per render rather than cached.
+  cellProps(cell, index, cellsArray, notebookLanguage) {
+    const { activeCellIndex, editor } = this.props;
+
+    const focusSibling = (target, toEnd) => {
+      if (!editor) return;
+      editor.setActiveCell(target);
+      requestAnimationFrame(() => {
+        const view = this.cellViews.get(cellsArray[target]?.id);
+        if (!view) return;
+        view.focus();
+        if (view.editor) {
+          const row = toEnd ? view.editor.getLastBufferRow() : 0;
+          view.editor.setCursorBufferPosition([row, toEnd ? Infinity : 0]);
+        }
+      });
+    };
+
+    return {
+      cell,
+      index,
+      active: index === activeCellIndex,
+      selected: this.selectedCells.has(index),
+      mode: this.mode,
+      editor,
+      notebookView: this,
+      notebookLanguage,
+      cellSourceRevision: cell.sourceRevision || 0,
+      onCellSelect: (event) => this.handleCellSelect(index, event),
+      onFocus: () => editor && editor.setActiveCell(index),
+      onSourceChange: (source) => editor && editor.updateCellSource(index, source),
+      onEnterEditMode: () => this.enterEditMode(),
+      onEnterCommandMode: () => this.setMode("command"),
+      onNavigateToPreviousCell: () => index > 0 && focusSibling(index - 1, true),
+      onNavigateToNextCell: () => index < cellsArray.length - 1 && focusSibling(index + 1, false),
+    };
   }
 
   render() {
-    // Preserve scroll position before clearing
-    const scrollTop = this.cellsContainer ? this.cellsContainer.scrollTop : 0;
+    const { cells, editor } = this.props;
+    const cellsArray = cells || [];
+    const notebookLanguage = getNotebookLanguage(editor?.document?.metadata || {});
+    const mode = this.mode === "edit" ? "edit-mode" : "command-mode";
 
-    // Update notebook classes
-    this.element.className = `jupyter-notebook ${this.mode === "edit" ? "edit-mode" : "command-mode"}`;
+    return (
+      <div className={`jupyter-notebook ${mode}`} tabIndex={-1}>
+        {this.renderToolbar()}
+        <div className="jupyter-notebook-cells" ref="cellsContainer" onScroll={this.handleScroll}>
+          {/* Keyed by cell id, so reordering moves each cell's element — and
+              with it the TextEditor inside — instead of rebuilding them. */}
+          {cellsArray.map((cell, index) => (
+            <CellView
+              key={cell.id}
+              ref={`cell-${cell.id}`}
+              {...this.cellProps(cell, index, cellsArray, notebookLanguage)}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
-    if (this.cellsContainer && this._scrollHandler) {
-      this.cellsContainer.removeEventListener("scroll", this._scrollHandler);
+  /** The cell views, keyed by cell id, as etch created them. */
+  get cellViews() {
+    const views = new Map();
+    for (const [name, value] of Object.entries(this.refs)) {
+      if (name.startsWith("cell-")) views.set(name.slice(5), value);
     }
+    return views;
+  }
 
-    // Dispose tooltips registered in the previous render before clearing the DOM.
-    if (this._tooltips) this._tooltips.dispose();
-    this._tooltips = new CompositeDisposable();
+  get cellsContainer() {
+    return this.refs.cellsContainer || null;
+  }
 
-    // Clear content
-    this.element.innerHTML = "";
-
-    // Build toolbar
-    const toolbar = this.buildToolbar();
-    this.element.appendChild(toolbar);
-
-    // Create cells container
-    this.cellsContainer = document.createElement("div");
-    this.cellsContainer.className = "jupyter-notebook-cells";
-    this.element.appendChild(this.cellsContainer);
-    this._scrollHandler = () => {
-      for (const callback of this.scrollCallbacks) {
-        callback();
-      }
-    };
-    this.cellsContainer.addEventListener("scroll", this._scrollHandler);
-
-    // Apply scroll past end padding if enabled
-    this.applyScrollPastEnd();
-
-    // Observe container resize for scroll past end updates
-    if (this._resizeObserver) {
-      this._resizeObserver.observe(this.cellsContainer);
+  handleScroll = () => {
+    for (const callback of this.scrollCallbacks) {
+      callback();
     }
+  };
 
-    // Set up drag auto-scroll on cells container
-    this.setupDragAutoScroll();
-
-    // Render cells
-    this.renderCells();
-
-    // Restore scroll position after DOM is updated
-    if (scrollTop > 0) {
-      requestAnimationFrame(() => {
-        if (this.cellsContainer) {
-          this.cellsContainer.scrollTop = scrollTop;
-        }
+  // Tooltips and the container listeners attach to elements the diff keeps, so
+  // each is registered once for the element it is on.
+  readAfterUpdate() {
+    for (const entry of this.commandButtons()) {
+      if (!entry) continue;
+      this.addTooltip(this.refs[`command-${entry[0]}`], {
+        title: entry[2],
+        keyBindingCommand: entry[0],
       });
     }
+    for (const entry of this.editorButtons()) {
+      if (!entry) continue;
+      this.addTooltip(this.refs[`editor-${entry[3]}`], {
+        title: entry[1],
+        keyBindingCommand: entry[2],
+      });
+    }
+    this.addTooltip(this.refs.cellTypeSelect, { title: "Cell Type (scroll to cycle)" });
+
+    const container = this.cellsContainer;
+    if (container && this._observedContainer !== container) {
+      this._observedContainer = container;
+      this.applyScrollPastEnd();
+      if (this._resizeObserver) this._resizeObserver.observe(container);
+      this.setupDragAutoScroll();
+    }
+  }
+
+  addTooltip(element, options) {
+    if (!element || this._tooltipTargets.has(element)) return;
+    this._tooltipTargets.add(element);
+    this._tooltips.add(atom.tooltips.add(element, options));
   }
 
   setupDragAutoScroll() {
@@ -222,320 +394,9 @@ class NotebookView {
     }
   }
 
-  buildToolbar() {
-    const { cells, activeCellIndex, editor } = this.props;
-
-    const toolbar = document.createElement("div");
-    toolbar.className = "jupyter-notebook-toolbar";
-
-    // Left side
-    const toolbarLeft = document.createElement("div");
-    toolbarLeft.className = "toolbar-left";
-
-    toolbarLeft.appendChild(
-      this.createCommandButton("jupyter-repl:run-cell", "icon-playback-play", "Run Cell"),
-    );
-    toolbarLeft.appendChild(
-      this.createCommandButton(
-        "jupyter-repl:run-cell-and-move-down",
-        "icon-jump-down",
-        "Run Cell and Move Down",
-      ),
-    );
-    toolbarLeft.appendChild(
-      this.createCommandButton(
-        "jupyter-repl:run-all",
-        "icon-playback-fast-forward",
-        "Run All Cells",
-      ),
-    );
-
-    toolbarLeft.appendChild(this.createSeparator());
-
-    toolbarLeft.appendChild(
-      this.createCommandButton("jupyter-repl:interrupt-kernel", "icon-stop", "Interrupt Kernel"),
-    );
-    toolbarLeft.appendChild(
-      this.createCommandButton("jupyter-repl:restart-kernel", "icon-sync", "Restart Kernel"),
-    );
-    toolbarLeft.appendChild(
-      this.createCommandButton(
-        "jupyter-repl:shutdown-kernel",
-        "icon-circle-slash",
-        "Shutdown Kernel",
-      ),
-    );
-
-    toolbarLeft.appendChild(this.createSeparator());
-
-    // Insert cell above button
-    const insertAboveBtn = document.createElement("button");
-    insertAboveBtn.className = "btn btn-sm icon icon-arrow-up";
-    this._tooltips.add(
-      atom.tooltips.add(insertAboveBtn, {
-        title: "Insert Cell Above",
-        keyBindingCommand: "jupyter-view:insert-cell-above",
-      }),
-    );
-    insertAboveBtn.onclick = () => editor && editor.insertCellAbove();
-    toolbarLeft.appendChild(insertAboveBtn);
-
-    // Insert cell below button
-    const insertBelowBtn = document.createElement("button");
-    insertBelowBtn.className = "btn btn-sm icon icon-arrow-down";
-    this._tooltips.add(
-      atom.tooltips.add(insertBelowBtn, {
-        title: "Insert Cell Below",
-        keyBindingCommand: "jupyter-view:insert-cell-below",
-      }),
-    );
-    insertBelowBtn.onclick = () => editor && editor.insertCellBelow();
-    toolbarLeft.appendChild(insertBelowBtn);
-
-    // Move up button
-    const moveUpBtn = document.createElement("button");
-    moveUpBtn.className = "btn btn-sm icon icon-chevron-up";
-    this._tooltips.add(
-      atom.tooltips.add(moveUpBtn, {
-        title: "Move Cell Up",
-        keyBindingCommand: "jupyter-view:move-cell-up",
-      }),
-    );
-    moveUpBtn.onclick = () => editor && editor.moveCellUp();
-    toolbarLeft.appendChild(moveUpBtn);
-
-    // Move down button
-    const moveDownBtn = document.createElement("button");
-    moveDownBtn.className = "btn btn-sm icon icon-chevron-down";
-    this._tooltips.add(
-      atom.tooltips.add(moveDownBtn, {
-        title: "Move Cell Down",
-        keyBindingCommand: "jupyter-view:move-cell-down",
-      }),
-    );
-    moveDownBtn.onclick = () => editor && editor.moveCellDown();
-    toolbarLeft.appendChild(moveDownBtn);
-
-    // Delete cell button
-    const deleteBtn = document.createElement("button");
-    deleteBtn.className = "btn btn-sm icon icon-trashcan";
-    this._tooltips.add(
-      atom.tooltips.add(deleteBtn, {
-        title: "Delete Cell",
-        keyBindingCommand: "jupyter-view:delete-cell",
-      }),
-    );
-    deleteBtn.onclick = () => editor && editor.deleteCell();
-    toolbarLeft.appendChild(deleteBtn);
-
-    // Separator
-    toolbarLeft.appendChild(this.createSeparator());
-
-    // Clear output button
-    const clearOutputBtn = document.createElement("button");
-    clearOutputBtn.className = "btn btn-sm icon icon-remove-close";
-    this._tooltips.add(
-      atom.tooltips.add(clearOutputBtn, {
-        title: "Clear Cell Output",
-        keyBindingCommand: "jupyter-view:clear-output",
-      }),
-    );
-    clearOutputBtn.onclick = () => editor && editor.clearOutput();
-    toolbarLeft.appendChild(clearOutputBtn);
-
-    // Clear all outputs button
-    const clearAllOutputsBtn = document.createElement("button");
-    clearAllOutputsBtn.className = "btn btn-sm icon icon-primitive-square";
-    this._tooltips.add(
-      atom.tooltips.add(clearAllOutputsBtn, {
-        title: "Clear All Outputs",
-        keyBindingCommand: "jupyter-view:clear-all-outputs",
-      }),
-    );
-    clearAllOutputsBtn.onclick = () => editor && editor.clearAllOutputs();
-    toolbarLeft.appendChild(clearAllOutputsBtn);
-
-    // Separator
-    toolbarLeft.appendChild(this.createSeparator());
-
-    // Cell type select
-    const cellTypeSelect = document.createElement("select");
-    cellTypeSelect.className = "input-select cell-type-select";
-    this._tooltips.add(atom.tooltips.add(cellTypeSelect, { title: "Cell Type (scroll to cycle)" }));
-    cellTypeSelect.innerHTML =
-      '<option value="code">Code</option><option value="markdown">Markdown</option><option value="raw">Raw</option>';
-    if (cells && cells[activeCellIndex]) {
-      cellTypeSelect.value = cells[activeCellIndex].type;
-    }
-    cellTypeSelect.onchange = (e) => editor && editor.changeCellType(e.target.value);
-    cellTypeSelect.addEventListener(
-      "wheel",
-      (e) => {
-        if (!editor) return;
-        e.preventDefault();
-        const options = Array.from(cellTypeSelect.options);
-        const current = options.findIndex((o) => o.value === cellTypeSelect.value);
-        const delta = e.deltaY > 0 ? 1 : -1;
-        const next = Math.max(0, Math.min(options.length - 1, current + delta));
-        if (next === current) return;
-        cellTypeSelect.value = options[next].value;
-        editor.changeCellType(options[next].value);
-      },
-      { passive: false },
-    );
-    toolbarLeft.appendChild(cellTypeSelect);
-
-    // Separator
-    toolbarLeft.appendChild(this.createSeparator());
-
-    // Mode indicator
-    const modeIndicator = document.createElement("span");
-    modeIndicator.className = "mode-indicator";
-    modeIndicator.textContent = this.mode === "edit" ? "Edit" : "Command";
-    toolbarLeft.appendChild(modeIndicator);
-
-    toolbar.appendChild(toolbarLeft);
-
-    return toolbar;
-  }
-
-  createSeparator() {
-    const sep = document.createElement("div");
-    sep.className = "toolbar-separator";
-    return sep;
-  }
-
-  createCommandButton(command, icon, title) {
-    const button = document.createElement("button");
-    button.className = `btn btn-sm icon ${icon}`;
-    this._tooltips.add(atom.tooltips.add(button, { title, keyBindingCommand: command }));
-    button.onclick = (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      this.activatePane();
-      atom.commands.dispatch(this.element, command);
-    };
-    return button;
-  }
-
-  renderCells() {
-    const { cells, activeCellIndex, editor } = this.props;
-
-    if (!this.cellsContainer) return;
-
-    // Track which cell IDs we've seen
-    const currentCellIds = new Set();
-    const cellsArray = cells || [];
-
-    // Create/update cell views
-    const notebookLanguage = getNotebookLanguage(editor?.document?.metadata || {});
-    cellsArray.forEach((cell, index) => {
-      currentCellIds.add(cell.id);
-
-      let cellView = this.cellViews.get(cell.id);
-
-      // Create navigation callbacks for this cell
-      const cellProps = {
-        cell: cell,
-        index: index,
-        active: index === activeCellIndex,
-        selected: this.selectedCells.has(index),
-        mode: this.mode,
-        editor: editor,
-        notebookView: this,
-        notebookLanguage,
-        cellSourceRevision: cell.sourceRevision || 0,
-        onCellSelect: (event) => this.handleCellSelect(index, event),
-        onFocus: () => editor && editor.setActiveCell(index),
-        onSourceChange: (source) => editor && editor.updateCellSource(index, source),
-        onEnterEditMode: () => this.enterEditMode(),
-        onEnterCommandMode: () => this.setMode("command"),
-        onNavigateToPreviousCell: () => {
-          if (editor && index > 0) {
-            editor.setActiveCell(index - 1);
-            // Focus the previous cell and move cursor to last row
-            requestAnimationFrame(() => {
-              const prevCellView = this.cellViews.get(cellsArray[index - 1]?.id);
-              if (prevCellView) {
-                prevCellView.focus();
-                if (prevCellView.editor) {
-                  const lastRow = prevCellView.editor.getLastBufferRow();
-                  prevCellView.editor.setCursorBufferPosition([lastRow, Infinity]);
-                }
-              }
-            });
-          }
-        },
-        onNavigateToNextCell: () => {
-          if (editor && index < cellsArray.length - 1) {
-            editor.setActiveCell(index + 1);
-            // Focus the next cell and move cursor to first row
-            requestAnimationFrame(() => {
-              const nextCellView = this.cellViews.get(cellsArray[index + 1]?.id);
-              if (nextCellView) {
-                nextCellView.focus();
-                if (nextCellView.editor) {
-                  nextCellView.editor.setCursorBufferPosition([0, 0]);
-                }
-              }
-            });
-          }
-        },
-      };
-
-      if (!cellView) {
-        // Create new cell view
-        cellView = new CellView(cellProps);
-        this.cellViews.set(cell.id, cellView);
-      } else {
-        // Update existing cell view
-        cellView.update(cellProps);
-      }
-    });
-
-    // Remove old cell views
-    for (const [id, cellView] of this.cellViews) {
-      if (!currentCellIds.has(id)) {
-        cellView.destroy();
-        this.cellViews.delete(id);
-      }
-    }
-
-    // Only rebuild DOM if cell order changed or new cells added/removed
-    // This preserves focus when just updating cell contents (like outputs)
-    const currentChildren = Array.from(this.cellsContainer.children);
-    const expectedOrder = cellsArray
-      .map((cell) => this.cellViews.get(cell.id)?.element)
-      .filter(Boolean);
-
-    const needsReorder =
-      currentChildren.length !== expectedOrder.length ||
-      currentChildren.some((child, i) => child !== expectedOrder[i]);
-
-    if (needsReorder) {
-      // Preserve scroll position before DOM manipulation
-      const scrollTop = this.cellsContainer.scrollTop;
-
-      // Only manipulate DOM when order actually changed
-      this.cellsContainer.innerHTML = "";
-      expectedOrder.forEach((element) => {
-        this.cellsContainer.appendChild(element);
-      });
-
-      // Restore scroll position after DOM is updated
-      requestAnimationFrame(() => {
-        if (this.cellsContainer) {
-          this.cellsContainer.scrollTop = scrollTop;
-        }
-      });
-    }
-  }
-
   update(props) {
     this.props = { ...this.props, ...props };
-
-    this.renderCells();
-    this.updateCellTypeSelect();
+    return etch.update(this);
   }
 
   onDidScroll(callback) {
@@ -552,33 +413,13 @@ class NotebookView {
     });
   }
 
-  /**
-   * Update the cell type dropdown to reflect the active cell's type
-   */
-  updateCellTypeSelect() {
-    const { cells, activeCellIndex } = this.props;
-    const cellTypeSelect = this.element.querySelector(".cell-type-select");
-    if (cellTypeSelect && cells && cells[activeCellIndex]) {
-      cellTypeSelect.value = cells[activeCellIndex].type;
-    }
-  }
-
   setMode(mode) {
     if (this.mode !== mode) {
       this.mode = mode;
 
-      // Update element classes immediately for keymap selectors
-      this.element.classList.remove("edit-mode", "command-mode");
-      this.element.classList.add(mode === "edit" ? "edit-mode" : "command-mode");
-
-      // Update mode indicator
-      const modeIndicator = this.element.querySelector(".mode-indicator");
-      if (modeIndicator) {
-        modeIndicator.textContent = mode === "edit" ? "Edit" : "Command";
-      }
-
-      // Re-render cells so mode-dependent views (e.g. markdown rendered vs editor) update
-      this.renderCells();
+      // The classes, the indicator and the cells all read the mode, and the
+      // keymap selectors need the class immediately.
+      etch.updateSync(this);
     }
   }
 
@@ -1032,10 +873,6 @@ class NotebookView {
     this._dropHandler = null;
     this._dragEndHandler = null;
 
-    if (this.cellsContainer && this._scrollHandler) {
-      this.cellsContainer.removeEventListener("scroll", this._scrollHandler);
-    }
-    this._scrollHandler = null;
     this.scrollCallbacks.clear();
     this.selectionCallbacks.clear();
 
@@ -1051,14 +888,11 @@ class NotebookView {
       this._resizeObserver = null;
     }
 
-    // Destroy all cell views
-    for (const cellView of this.cellViews.values()) {
-      cellView.destroy();
-    }
-    this.cellViews.clear();
-
-    this.cellsContainer = null;
-    this.element = null;
+    this._observedContainer = null;
+    // The cell views are children of this component, so they go with it — and
+    // synchronously, because each one owns a TextEditor that has to be released
+    // when the notebook closes rather than on some later frame.
+    return etch.destroySync(this);
   }
 }
 
