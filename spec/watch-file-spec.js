@@ -55,8 +55,11 @@ describe("watchFile (notebook document watcher migration)", () => {
     expect(deleted).toBe(1);
   });
 
+  // The only spec here that waits on the real watcher. Arming goes through the
+  // @parcel/watcher worker and its cost varies with what else the suite has
+  // been doing, so it gets its own headroom rather than jasmine's default.
   it("arms without throwing and resolves its start promise", async () => {
     handle = watchFile(file);
     await handle.getStartPromise();
-  });
+  }, 20000);
 });
