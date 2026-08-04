@@ -6,7 +6,7 @@ Open and edit Jupyter notebooks.
 
 - **Notebook editing**: open and edit `.ipynb` files with a cell-based interface, command/edit modes, and keyboard-driven navigation.
 - **Cell operations**: insert, delete, move, merge, cut, copy, paste, duplicate, change type, and reorder cells by drag and drop.
-- **Rich output**: render stored notebook outputs including text, images, SVG, HTML, LaTeX, and markdown, with ANSI color support.
+- **Rich output**: render stored notebook outputs — text, images, SVG, HTML, LaTeX, markdown, plotly and vega, with ANSI color — through jupyter-repl's renderers.
 - **Multi-select and history**: anchor-based multi-cell selection and buffer-based undo/redo of notebook edits.
 - **Execution integration**: run cells through the jupyter-repl kernel engine via the `jupyter.adapter` service, with per-cell run buttons and live execution status.
 - **Notebook search**: search and replace cell source through the search-panel package, entering edit mode on the matching cell.
@@ -79,6 +79,7 @@ Commands available in `.tree-view`:
 - **linter.ui** (`1.0.0`): provided to receive linter message updates so notebook scrollmap markers stay in sync with diagnostics.
 - **navigation.adapter** (`1.0.0`): provided to show notebook markdown headings as a document outline, activating and revealing the cell on selection.
 - **autocomplete.watch-editor** (`^1.0.0`): consumed to keep autocomplete active in notebook cell editors.
+- **jupyter.output** (`^1.0.0`): consumed to render stored outputs with jupyter-repl's renderers; without it a notebook falls back to text and images.
 - **tree-view.selection** (`^1.0.0`): consumed to add tree-view entries for opening a selected `.ipynb` as a notebook or as plain JSON source.
 - **scrollmap.widget** (`^1.0.0`): consumed to render notebook scrollmap markers in a standalone scrollbar widget.
 
