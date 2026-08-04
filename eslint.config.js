@@ -2,6 +2,7 @@ const js = require("@eslint/js");
 const n = require("eslint-plugin-n");
 const globals = require("globals");
 const prettier = require("eslint-config-prettier");
+const jsx = require("./eslint-jsx");
 
 // `atom` is provided by the Lumine runtime, not resolvable from this manifest.
 const runtimeModules = ["atom"];
@@ -14,19 +15,25 @@ module.exports = [
   js.configs.recommended,
   n.configs["flat/recommended-script"],
   {
+    // `.jsx` is not one of eslint's default extensions, and the etch components
+    // live in those files.
+    files: ["**/*.js", "**/*.jsx"],
     settings: {
       // Lumine bundles its own Node 24 runtime; lint against that, not engines.
-      n: { version: ">=24.0.0" },
+      // It also registers .jsx with the module loader, which node does not.
+      n: { version: ">=24.0.0", tryExtensions: [".js", ".jsx", ".json", ".node"] },
     },
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "commonjs",
+      parserOptions: { ecmaFeatures: { jsx: true } },
       globals: {
         ...globals.browser,
         ...globals.node,
         atom: "readonly",
       },
     },
+    plugins: { jsx },
     rules: {
       "no-constant-condition": ["error", { checkLoops: false }],
       "no-empty": ["error", { allowEmptyCatch: true }],
@@ -37,12 +44,13 @@ module.exports = [
       "n/no-missing-require": ["error", { allowModules: runtimeModules }],
       "n/no-extraneous-require": ["error", { allowModules: runtimeModules }],
       "n/no-unpublished-require": ["error", { allowModules: runtimeModules }],
+      "jsx/jsx-uses": ["error", { pragma: "etch" }],
     },
   },
   {
     // Dev tooling (this config) legitimately requires devDependencies and is
     // never shipped as runtime.
-    files: ["eslint.config.js"],
+    files: ["eslint.config.js", "eslint-jsx.js"],
     rules: {
       "n/no-unpublished-require": "off",
       "n/no-extraneous-require": "off",
