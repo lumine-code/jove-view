@@ -445,10 +445,16 @@
       margin-top: 4px;
     }
 
+    /* The service renders plain text into <pre>; the UI theme's global pre
+       block styling (background, padding) must not show through, the same
+       neutralisation jupyter-repl applies in its own output area. */
     pre,
     code {
       font-family: inherit;
       font-size: inherit;
+      color: inherit;
+      background: inherit;
+      padding: 0;
     }
 
     .output-stream,
