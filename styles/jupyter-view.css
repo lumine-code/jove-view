@@ -163,6 +163,7 @@
   .jupyter-notebook-cells {
     flex: 1;
     overflow-y: auto;
+    padding: calc(var(--component-padding) / 2);
   }
 
   /* Mode-specific styles */
