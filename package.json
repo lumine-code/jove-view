@@ -24,6 +24,15 @@
     "In a notebook you can turn the selected cell into Markdown with {{ 'jupyter-view:change-cell-to-markdown' | keystroke }}"
   ],
   "main": "./lib/main",
+  "files": [
+    "docs",
+    "grammars",
+    "keymaps",
+    "lib",
+    "menus",
+    "spec",
+    "styles"
+  ],
   "scripts": {
     "test": "lumine --test spec",
     "lint": "eslint . --max-warnings 0",
