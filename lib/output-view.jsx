@@ -1,3 +1,4 @@
+/** @jsx etch.dom */
 /**
  * OutputView - renders the outputs stored in a notebook cell.
  *

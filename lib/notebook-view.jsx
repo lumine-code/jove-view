@@ -1,3 +1,4 @@
+/** @jsx etch.dom */
 /**
  * NotebookView - the notebook's toolbar and its list of cells.
  */
@@ -78,10 +79,14 @@ class NotebookView {
   // shown in the tooltip.
   editorButtons() {
     return [
-      ["icon-arrow-up", "Insert Cell Above", "jupyter-view:insert-cell-above", "insertCellAbove"],
-      ["icon-arrow-down", "Insert Cell Below", "jupyter-view:insert-cell-below", "insertCellBelow"],
-      ["icon-chevron-up", "Move Cell Up", "jupyter-view:move-cell-up", "moveCellUp"],
-      ["icon-chevron-down", "Move Cell Down", "jupyter-view:move-cell-down", "moveCellDown"],
+      // Insert points an arrow at the edge it puts the cell against; move is a
+      // plain direction. Both are the weight of the run and delete glyphs
+      // beside them — a plain arrow reads as "move" and the chevrons were the
+      // lightest marks in the row.
+      ["icon-move-up", "Insert Cell Above", "jupyter-view:insert-cell-above", "insertCellAbove"],
+      ["icon-move-down", "Insert Cell Below", "jupyter-view:insert-cell-below", "insertCellBelow"],
+      ["icon-triangle-up", "Move Cell Up", "jupyter-view:move-cell-up", "moveCellUp"],
+      ["icon-triangle-down", "Move Cell Down", "jupyter-view:move-cell-down", "moveCellDown"],
       ["icon-trashcan", "Delete Cell", "jupyter-view:delete-cell", "deleteCell"],
       null,
       ["icon-remove-close", "Clear Cell Output", "jupyter-view:clear-output", "clearOutput"],

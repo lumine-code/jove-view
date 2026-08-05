@@ -1,3 +1,4 @@
+/** @jsx etch.dom */
 /**
  * CellView - one notebook cell: its gutter, its input and its outputs.
  */

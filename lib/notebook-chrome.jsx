@@ -1,3 +1,4 @@
+/** @jsx etch.dom */
 /**
  * What the notebook pane shows while it has no view of its own: the loading
  * placeholder, and the message when a notebook could not be opened.
