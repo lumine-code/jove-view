@@ -44,7 +44,9 @@ module.exports = [
       "n/no-missing-require": ["error", { allowModules: runtimeModules }],
       "n/no-extraneous-require": ["error", { allowModules: runtimeModules }],
       "n/no-unpublished-require": ["error", { allowModules: runtimeModules }],
-      "jsx/jsx-uses": ["error", { pragma: "etch" }],
+      // Lumine compiles `.jsx` with `etch.dom` as the factory, which is this
+      // rule's default pragma.
+      "jsx/jsx-uses": "error",
     },
   },
   {
