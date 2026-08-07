@@ -24,6 +24,8 @@ Commands available in `atom-workspace`:
 
 - `jupyter-view:toggle`: toggle the active notebook item,
 - `jupyter-view:new-notebook`: create a new notebook,
+- `jupyter-view:scroll-up`: scroll the notebook up by one page,
+- `jupyter-view:scroll-down`: scroll the notebook down by one page,
 - `jupyter-view:open-source`: open the active notebook as plain text,
 - `jupyter-view:clear-output`: clear active cell output,
 - `jupyter-view:clear-all-outputs`: clear all outputs,

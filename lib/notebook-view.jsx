@@ -812,18 +812,18 @@ class NotebookView {
 
   scrollUp() {
     if (!this.cellsContainer) return;
-    const scrollPos = atom.config.get("smooth-scroll.scrollPos") ?? 1;
+    const scrollPos = atom.config.get("jupyter-view.notebook.scrollPos") ?? 1;
     this._smoothScrollBy(-this.cellsContainer.offsetHeight * scrollPos);
   }
 
   scrollDown() {
     if (!this.cellsContainer) return;
-    const scrollPos = atom.config.get("smooth-scroll.scrollPos") ?? 1;
+    const scrollPos = atom.config.get("jupyter-view.notebook.scrollPos") ?? 1;
     this._smoothScrollBy(+this.cellsContainer.offsetHeight * scrollPos);
   }
 
   _smoothScrollBy(deltaY) {
-    const scrollDiv = atom.config.get("smooth-scroll.scrollDiv") ?? 20;
+    const scrollDiv = atom.config.get("jupyter-view.notebook.scrollDiv") ?? 20;
     this._pendingScrollY = deltaY + (scrollDiv - 1) * Math.sign(deltaY);
     if (this._scrollAnimId) return;
     const animate = () => {
@@ -832,7 +832,7 @@ class NotebookView {
         this._scrollAnimId = null;
         return;
       }
-      const div = atom.config.get("smooth-scroll.scrollDiv") ?? 20;
+      const div = atom.config.get("jupyter-view.notebook.scrollDiv") ?? 20;
       const step = Math.trunc(this._pendingScrollY / div);
       if (step !== 0) {
         container.scrollTop += step;

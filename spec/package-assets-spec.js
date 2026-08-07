@@ -19,8 +19,13 @@ describe("jupyter-view package assets", () => {
   });
 
   it("parses the keymap and menu, and every menu entry uses `command`", () => {
-    const keymap = JSON.parse(read("keymaps/jupyter-view.json"));
+    // The editor loads keymaps through season, which tolerates comments, so
+    // JSON.parse alone is the wrong reader.
+    const keymap = JSON.parse(read("keymaps/jupyter-view.json").replace(/^\s*\/\/.*$/gm, ""));
     expect(keymap[".jupyter-notebook"]).toBeDefined();
+    // alt-j is the Jupyter family's chord prefix. ctrl-shift-n is core's
+    // application:new-window and this binding, being deeper, took it.
+    expect(keymap["atom-workspace"]["alt-j n"]).toBe("jupyter-view:new-notebook");
     // The run bindings delegate to jupyter-repl (the execution engine).
     expect(keymap[".jupyter-notebook"]["ctrl-enter"]).toBe("jupyter-repl:run-cell");
 

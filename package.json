@@ -116,6 +116,22 @@
           "description": "Open .ipynb files with jupyter-view through the Lumine workspace opener.",
           "type": "boolean",
           "default": true
+        },
+        "scrollPos": {
+          "title": "Scroll Distance",
+          "description": "How far a page scroll moves, as a fraction of the visible notebook height.",
+          "type": "number",
+          "minimum": 0.1,
+          "maximum": 1,
+          "default": 1
+        },
+        "scrollDiv": {
+          "title": "Scroll Smoothness",
+          "description": "Number of steps a page scroll is animated over. Higher is smoother and slower.",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 20
         }
       }
     },
