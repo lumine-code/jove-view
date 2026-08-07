@@ -6,47 +6,144 @@
         {
           "label": "Jupyter View",
           "submenu": [
-            { "label": "New Notebook", "command": "jupyter-view:new-notebook" },
-            { "label": "Open Notebook...", "command": "application:open-file" },
-            { "label": "Open Source", "command": "jupyter-view:open-source" },
-            { "type": "separator" },
-            { "label": "Clear Output", "command": "jupyter-view:clear-output" },
-            { "label": "Clear All Outputs", "command": "jupyter-view:clear-all-outputs" },
-            { "type": "separator" },
-            { "label": "Export to Python", "command": "jupyter-view:export-to-python" },
-            { "label": "Export to HTML", "command": "jupyter-view:export-to-html" }
+            {
+              "label": "New Notebook",
+              "command": "jupyter-view:new-notebook"
+            },
+            {
+              "label": "Open Notebook…",
+              "command": "application:open-file"
+            },
+            {
+              "label": "Open Source",
+              "command": "jupyter-view:open-source"
+            },
+            {
+              "type": "separator"
+            },
+            {
+              "label": "Clear Output",
+              "command": "jupyter-view:clear-output"
+            },
+            {
+              "label": "Clear All Outputs",
+              "command": "jupyter-view:clear-all-outputs"
+            },
+            {
+              "type": "separator"
+            },
+            {
+              "label": "Export to Python",
+              "command": "jupyter-view:export-to-python"
+            },
+            {
+              "label": "Export to HTML",
+              "command": "jupyter-view:export-to-html"
+            }
           ]
         }
       ]
     }
   ],
-
   "context-menu": {
     ".jupyter-notebook": [
-      { "label": "Open Source", "command": "jupyter-view:open-source" },
-      { "type": "separator" },
-      { "label": "Insert Cell Above", "command": "jupyter-view:insert-cell-above" },
-      { "label": "Insert Cell Below", "command": "jupyter-view:insert-cell-below" },
-      { "type": "separator" },
-      { "label": "Delete Cell", "command": "jupyter-view:delete-cell" },
-      { "label": "Move Cell Up", "command": "jupyter-view:move-cell-up" },
-      { "label": "Move Cell Down", "command": "jupyter-view:move-cell-down" },
-      { "type": "separator" },
-      { "label": "Change to Code", "command": "jupyter-view:change-cell-to-code" },
-      { "label": "Change to Markdown", "command": "jupyter-view:change-cell-to-markdown" },
-      { "label": "Change to Raw", "command": "jupyter-view:change-cell-to-raw" },
-      { "type": "separator" },
-      { "label": "Clear Output", "command": "jupyter-view:clear-output" },
-      { "label": "Toggle Output", "command": "jupyter-view:toggle-cell-output" }
+      {
+        "type": "separator"
+      },
+      {
+        "label": "Open Source",
+        "command": "jupyter-view:open-source"
+      },
+      {
+        "type": "separator"
+      },
+      {
+        "label": "Insert Cell Above",
+        "command": "jupyter-view:insert-cell-above"
+      },
+      {
+        "label": "Insert Cell Below",
+        "command": "jupyter-view:insert-cell-below"
+      },
+      {
+        "type": "separator"
+      },
+      {
+        "label": "Delete Cell",
+        "command": "jupyter-view:delete-cell"
+      },
+      {
+        "label": "Move Cell Up",
+        "command": "jupyter-view:move-cell-up"
+      },
+      {
+        "label": "Move Cell Down",
+        "command": "jupyter-view:move-cell-down"
+      },
+      {
+        "type": "separator"
+      },
+      {
+        "label": "Change to Code",
+        "command": "jupyter-view:change-cell-to-code"
+      },
+      {
+        "label": "Change to Markdown",
+        "command": "jupyter-view:change-cell-to-markdown"
+      },
+      {
+        "label": "Change to Raw",
+        "command": "jupyter-view:change-cell-to-raw"
+      },
+      {
+        "type": "separator"
+      },
+      {
+        "label": "Clear Output",
+        "command": "jupyter-view:clear-output"
+      },
+      {
+        "label": "Toggle Output",
+        "command": "jupyter-view:toggle-cell-output"
+      },
+      {
+        "type": "separator"
+      }
     ],
     ".jupyter-cell": [
-      { "label": "Clear Output", "command": "jupyter-view:clear-output" },
-      { "type": "separator" },
-      { "label": "Delete Cell", "command": "jupyter-view:delete-cell" }
+      {
+        "type": "separator"
+      },
+      {
+        "label": "Clear Output",
+        "command": "jupyter-view:clear-output"
+      },
+      {
+        "type": "separator"
+      },
+      {
+        "label": "Delete Cell",
+        "command": "jupyter-view:delete-cell"
+      },
+      {
+        "type": "separator"
+      }
     ],
     ".tree-view .file[data-name$=\".ipynb\"]": [
-      { "label": "Open Notebook", "command": "jupyter-view:open-notebook" },
-      { "label": "Open Source", "command": "jupyter-view:open-source" }
+      {
+        "type": "separator"
+      },
+      {
+        "label": "Open Notebook",
+        "command": "jupyter-view:open-notebook"
+      },
+      {
+        "label": "Open Source",
+        "command": "jupyter-view:open-source"
+      },
+      {
+        "type": "separator"
+      }
     ]
   }
 }
